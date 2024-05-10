@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+
+body {
+  color: rgb(var(--foreground-rgb));
+}
+
+.hero_animation{
+  background-image: linear-gradient(147.92deg,hsla(239,76%,53%,0.456) 10.41%,hsla(0,0%,100%,0) 89.25%);
+  animation: changeBackgroundColor 8s infinite alternate;
+}
+
+@keyframes changeBackgroundColor {
+  0%,100% {
+    opacity: 1;
+  }
+  16.67% {
+    opacity: 0.9;
+  }
+  33.33% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  66.67% {
+    opacity: 0.5;
+  }
+  83.33% {
+    opacity: 0.4;
+  }
+}
+
+
+.text-gradient{
+  background: linear-gradient(90deg,#4d88c4 2.34%,#964be1 100.78%);
+    background-clip: border-box;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* text-fill-color: transparent; */
+}
+
+.glow {
+  animation-name: glow;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  box-shadow: 0 0 5px #fff,0 0 10px #fff,0 0 20px #fff,0 0 40px #ff00de,0 0 80px #ff00de,0 0 90px #ff00de,0 0 100px #ff00de,0 0 150px #ff00de
+}
+
+@keyframes glow {
+  0% {
+      opacity: .5;
+      box-shadow: 0 0 5px #fff,0 0 10px #fff,0 0 20px #fff,0 0 40px #ff00de,0 0 80px #ff00de,0 0 90px #ff00de,0 0 100px #ff00de,0 0 150px #ff00de
+  }
+
+  to {
+      opacity: 1;
+      box-shadow: 0 0 5px #fff,0 0 10px #fff,0 0 20px #fff,0 0 40px rgba(255,255,0,.5),0 0 80px rgba(255,255,0,.5),0 0 90px rgba(255,255,0,.5),0 0 100px rgba(255,255,0,.5),0 0 150px rgba(255,255,0,.5)
+  }
+}
+
+.animated-wrapper {
+  animation-name: move-wrapper;
+  animation-duration: 25s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  position: absolute;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+
+/* 
+ @keyframes move-wrapper {
+  0% {
+      transform: translate(-50%,50%) rotate(0) scale(0.8)
+  }
+
+  33.33% {
+      transform: translate(90vw,-60vh) rotate(200deg) scale(1)
+  }
+
+  40% {
+      transform: translate(50vw,-30vh) rotate(210deg) scale(1.2)
+  }
+  65%{
+    transform: translate(20vw,-45vh) rotate(260deg) scale(1.4)
+  }
+  80%{
+    transform: translate(90vw,-25vh) rotate(150deg) scale(1.1)
+  }
+  100%{
+    transform: translate(-50%,50%) rotate(0) scale(0.8)
+  }
+}
+
+ */
+
+
+ @keyframes move-wrapper {
+  0% {
+    transform: translate(-50%, 50%) rotate(0) scale(0.8);
+  }
+  33.33% {
+    transform: translate(90vw, -60vh) rotate(200deg) scale(1);
+  }
+  40% {
+    transform: translate(50vw, -30vh) rotate(210deg) scale(1.2);
+  }
+  65% {
+    transform: translate(20vw, -45vh) rotate(260deg) scale(1.4);
+  }
+  80% {
+    transform: translate(90vw, -25vh) rotate(150deg) scale(1.1);
+  }
+  100% {
+    transform: translate(-50%, 50%) rotate(0) scale(0.8);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  /* Adjustments for tablet devices */
+  @keyframes move-wrapper {
+    0% {
+      transform: translate(-50%, 50%) rotate(0) scale(0.8);
+    }
+    33.33% {
+      transform: translate(80vw, -60vh) rotate(200deg) scale(1);
+    }
+    40% {
+      transform: translate(40vw, -30vh) rotate(210deg) scale(1.2);
+    }
+    65% {
+      transform: translate(10vw, -45vh) rotate(260deg) scale(1.4);
+    }
+    80% {
+      transform: translate(80vw, -25vh) rotate(150deg) scale(1.1);
+    }
+    100% {
+      transform: translate(-50%, 50%) rotate(0) scale(0.8);
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* Adjustments for mobile devices */
+  @keyframes move-wrapper {
+    0% {
+      transform: translate(-50%, 50%) rotate(0) scale(0.8);
+    }
+    33.33% {
+      transform: translate(70vw, -60vh) rotate(200deg) scale(1);
+    }
+    40% {
+      transform: translate(30vw, -30vh) rotate(210deg) scale(1.2);
+    }
+    65% {
+      transform: translate(0, -45vh) rotate(260deg) scale(1.4);
+    }
+    80% {
+      transform: translate(70vw, -25vh) rotate(150deg) scale(1.1);
+    }
+    100% {
+      transform: translate(-50%, 50%) rotate(0) scale(0.8);
+    }
+  }
+}
