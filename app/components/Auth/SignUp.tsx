@@ -61,7 +61,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
       <h1 className={`${styles.title}`}>Join to ELearning</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className={`${styles.label}`}>Enter your Email</label>
+          <label className={`${styles.label}`}>Enter your Name</label>
           <input
             type="text"
             name=""
