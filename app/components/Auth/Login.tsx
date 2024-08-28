@@ -83,7 +83,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
             value={values.password}
             onChange={handleChange}
             id="password"
-            placeholder="password@!%2"
+            placeholder="password@!%253"
             className={`${
               errors.password && touched.password && "border-red-500"
             } ${styles.input}`}
