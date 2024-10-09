@@ -11,7 +11,10 @@ import { useSelector } from "react-redux";
 import Image from "next/image";
 import avatar from "../../public/assets/avatar.png";
 import { useSession } from "next-auth/react";
-import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
+import {
+  useLogOutQuery,
+  useSocialAuthMutation,
+} from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
 type Props = {
   open: boolean;
@@ -27,7 +30,9 @@ const Header: FC<Props> = (props) => {
   const { user } = useSelector((state: any) => state.auth);
   const { data } = useSession() as any;
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
-
+  const [logout, setLogout] = useState(false);
+  const {} = useLogOutQuery(undefined, { skip: !logout ? true : false });
+  const exdata = useSelector((state: any) => state.auth);
   useEffect(() => {
     if (!user) {
       if (data) {
@@ -38,11 +43,13 @@ const Header: FC<Props> = (props) => {
         });
       }
     }
-    if (isSuccess) {
-        
+    if (data === null && isSuccess) {
       toast.success("Login Successfully");
     }
-  }, [data]);
+    if (data === null && logout) {
+      setLogout(true);
+    }
+  }, [data, user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,12 +83,12 @@ const Header: FC<Props> = (props) => {
       <div
         className={`w-full border-b ${
           active ? "fixed top-0 left-0 h-16 z-50" : "h-20"
-        } 
+        }
                 ${
                   active
                     ? "dark:bg-opacity-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-black border-[#ffffff1c] shadow-xl"
                     : "dark:border-[#ffffff1c] dark:shadow"
-                } 
+                }
                 transition duration-500`}
       >
         <div className="w-[95%] 800px:w-[92%] m-auto py-2 h-full">
@@ -112,6 +119,9 @@ const Header: FC<Props> = (props) => {
                     width={30}
                     height={30}
                     className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                    style={{
+                      border: props.activeItem === 5 ? "2px solid #37a39a" : "",
+                    }}
                   />
                 </Link>
               ) : (
