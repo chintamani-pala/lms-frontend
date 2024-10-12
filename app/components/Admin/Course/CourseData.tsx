@@ -2,6 +2,7 @@ import { styles } from "../../../../app/styles/style";
 import React, { FC } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import toast from "react-hot-toast";
+
 type Props = {
   benefits: { title: string }[];
   setBenefits: (benefits: { title: string }[]) => void;
@@ -19,7 +20,7 @@ const CourseData: FC<Props> = ({
   active,
   setActive,
 }) => {
-  const handleBenefitsChange = (index: number, value: any) => {
+  const handleBenefitsChange = (index: number, value: string) => {
     const updatedBenefits = [...benefits];
     updatedBenefits[index].title = value;
     setBenefits(updatedBenefits);
@@ -29,11 +30,12 @@ const CourseData: FC<Props> = ({
     setBenefits([...benefits, { title: "" }]);
   };
 
-  const handlePrerequisitChange = (index: number, value: any) => {
+  const handlePrerequisitChange = (index: number, value: string) => {
     const updatedPrerequisites = [...prerequisites];
     updatedPrerequisites[index].title = value;
     setPrerequisites(updatedPrerequisites);
   };
+
   const handleAddPrerequisits = () => {
     setPrerequisites([...prerequisites, { title: "" }]);
   };
@@ -41,21 +43,23 @@ const CourseData: FC<Props> = ({
   const prevButton = () => {
     setActive(active - 1);
   };
+
   const handleOptions = () => {
     if (
       benefits[benefits.length - 1].title === "" ||
       prerequisites[prerequisites.length - 1].title === ""
     ) {
-      setActive(active + 1);
+      toast.error("All fields are required to go to the next!");
     } else {
-      toast.error("All fields are required for go to next!");
+      setActive(active + 1);
     }
   };
+
   return (
     <div className="w-[80%] m-auto mt-24 block">
       <div>
-        <label htmlFor="email" className={`${styles.label} text-[20px]`}>
-          What are the benifits for students in this course?
+        <label htmlFor="benefits" className={`${styles.label} text-[20px]`}>
+          What are the benefits for students in this course?
         </label>
         <br />
         {benefits.map((benefit, index) => (
@@ -76,18 +80,21 @@ const CourseData: FC<Props> = ({
         />
       </div>
       <div>
-        <label htmlFor="email" className={`${styles.label} text-[20px]`}>
+        <label
+          htmlFor="prerequisites"
+          className={`${styles.label} text-[20px]`}
+        >
           What are the prerequisites for students in this course?
         </label>
         <br />
-        {prerequisites.map((benefit, index) => (
+        {prerequisites.map((prerequisite, index) => (
           <input
             key={index}
             type="text"
-            name="Benefits"
-            placeholder="You will be able to build a full stack LMS platform...."
+            name="Prerequisites"
+            placeholder="You will need to complete certain courses...."
             required
-            value={prerequisites?.title}
+            value={prerequisite.title} // Corrected this line
             onChange={(e) => handlePrerequisitChange(index, e.target.value)}
             className={`${styles.input} my-2`}
           />
@@ -99,13 +106,13 @@ const CourseData: FC<Props> = ({
         <div className="w-full flex items-center justify-between">
           <div
             className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
-            onClick={() => prevButton()}
+            onClick={prevButton}
           >
             Prev
           </div>
           <div
             className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
-            onClick={() => handleOptions()}
+            onClick={handleOptions}
           >
             Next
           </div>
