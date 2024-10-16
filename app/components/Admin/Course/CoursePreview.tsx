@@ -51,7 +51,7 @@ const CoursePreview: FC<Props> = ({
             {courseData?.estimatedPrice} ₹
           </h5>
           <h4 className="pl-5 pt-4 text-[22px]">
-            {Math.round(discountPercentagePrice)}% Off{" "}
+            {Math.round(+discountPercentagePrice)}% Off{" "}
             {/* Round off the discount percentage */}
           </h4>
         </div>
