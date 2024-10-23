@@ -4,6 +4,8 @@ import { useLogOutQuery } from "../../../redux/features/auth/authApi";
 import { signOut } from "next-auth/react";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
+import { redirect } from "next/navigation";
+import { useLogoutMutation } from "@/redux/features/user/userApi";
 type Props = {
   user: any;
 };
@@ -13,9 +15,15 @@ const Profile: FC<Props> = ({ user }) => {
   const [active, setActive] = useState(1);
   const [avatar, setAvatar] = useState(null);
   const [logout, setLogout] = useState(false);
-  const {} = useLogOutQuery(undefined, { skip: !logout ? true : false });
+  // const logOutHandler = async () => {
+  //   setLogout(true);
+  //   await signOut();
+  // };
+  const [logoutUser] = useLogoutMutation({});
+
   const logOutHandler = async () => {
     setLogout(true);
+    await logoutUser({});
     await signOut();
   };
 
