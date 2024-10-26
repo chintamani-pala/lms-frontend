@@ -20,6 +20,7 @@ import {
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 type Props = {};
 
@@ -94,7 +95,12 @@ const AllCourses = (props: Props) => {
         return (
           <>
             <Button>
-              <AiOutlineEdit className="dark:text-white text-black" size={20} />
+              <Link href={`/admin/edit-course/${params.row.id}`}>
+                <AiOutlineEdit
+                  className="dark:text-white text-black"
+                  size={20}
+                />
+              </Link>
             </Button>
           </>
         );
@@ -121,7 +127,7 @@ const AllCourses = (props: Props) => {
   const rows: any = [];
   {
     data &&
-      data?.course?.forEach((item: any) => {
+      data?.courses?.forEach((item: any) => {
         rows.push({
           id: item._id,
           title: item.name,

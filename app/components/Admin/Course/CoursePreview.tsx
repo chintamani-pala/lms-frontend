@@ -11,6 +11,7 @@ type Props = {
   setActive: (active: number) => void;
   courseData: any;
   handleCourseCreate: any;
+  isEdit: boolean;
 };
 
 const CoursePreview: FC<Props> = ({
@@ -18,6 +19,7 @@ const CoursePreview: FC<Props> = ({
   setActive,
   courseData,
   handleCourseCreate,
+  isEdit,
 }) => {
   const discountPercentage =
     ((courseData?.estimatedPrice - courseData?.price) /
@@ -98,16 +100,30 @@ const CoursePreview: FC<Props> = ({
             <h1 className="text-[25px] font-Poppins font-[600]">
               What you will learn from this course?
             </h1>
-          </div>
-          {courseData?.benefits?.map((item: any, index: number) => (
-            <div className="w-full flex 800px:items-center py-2" key={index}>
-              <div className="w-[15px] mr-1">
-                {/* <IoCheckmarkCircleOutline size={20} /> */}
-                <IoCheckmarkDoneOutline size={20} />
+            {courseData?.benefits?.map((item: any, index: number) => (
+              <div className="w-full flex 800px:items-center py-2" key={index}>
+                <div className="w-[15px] mr-1">
+                  {/* <IoCheckmarkCircleOutline size={20} /> */}
+                  <IoCheckmarkDoneOutline size={20} />
+                </div>
+                <p className="pl-2">{item.title}</p>
               </div>
-              <p className="pl-2">{item.title}</p>
-            </div>
-          ))}
+            ))}
+            <br />
+            <h1 className="text-[25px] font-Poppins font-[600]">
+              What are the prerequisites for starting this course?
+            </h1>
+            {courseData?.prerequisites?.map((item: any, index: number) => (
+              <div className="w-full flex 800px:items-center py-2" key={index}>
+                <div className="w-[15px] mr-1">
+                  {/* <IoCheckmarkCircleOutline size={20} /> */}
+                  <IoCheckmarkDoneOutline size={20} />
+                </div>
+                <p className="pl-2">{item.title}</p>
+              </div>
+            ))}
+          </div>
+
           <br />
           <br />
           <div className="w-full">
@@ -130,7 +146,7 @@ const CoursePreview: FC<Props> = ({
             className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
             onClick={createCourse}
           >
-            Create
+            {isEdit ? "Update" : "Create"}
           </div>
         </div>
       </div>

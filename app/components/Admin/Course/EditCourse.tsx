@@ -1,22 +1,32 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import CourseInformation from "./CourseInformation";
 import CourseOptions from "./CourseOptions";
 import CourseData from "./CourseData";
 import CourseContent from "./CourseContent";
 import CoursePreview from "./CoursePreview";
-import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
+import {
+  useEditCourseMutation,
+  useGetAllCoursesQuery,
+} from "@/redux/features/courses/coursesApi";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
-type Props = {};
+type Props = {
+  id: string;
+};
 
-const CreateCourse = (props: Props) => {
-  const [createCourse, { isLoading, isSuccess, error }] =
-    useCreateCourseMutation();
-
+const EditCourse: FC<Props> = ({ id }) => {
+  const [editCourse, { isSuccess, error }] = useEditCourseMutation();
+  const { data, refetch } = useGetAllCoursesQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+  const editCourseData =
+    data && data?.courses?.find((item: any) => item._id === id);
+  console.log(editCourseData);
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Course created successfully");
+      toast.success("Course Updated successfully");
       redirect("/admin/courses");
     }
     if (error) {
@@ -25,8 +35,28 @@ const CreateCourse = (props: Props) => {
         toast.error(errorData.data?.message);
       }
     }
-  }, [isLoading, isSuccess, error]);
+  }, [isSuccess, error]);
+
   const [active, setActive] = useState(0);
+  useEffect(() => {
+    if (editCourseData) {
+      setCourseInfo({
+        name: editCourseData.name,
+        description: editCourseData.description,
+        price: editCourseData?.price,
+        estimatedPrice: editCourseData?.estimatedPrice,
+        tags: editCourseData?.tags,
+        level: editCourseData?.level,
+        demoUrl: editCourseData?.demoUrl,
+        thumbnail: editCourseData?.thumbnail?.url,
+      });
+
+      setBenefits(editCourseData?.benefits);
+
+      setPrerequisites(editCourseData?.prerequisites);
+      setCourseContentData(editCourseData?.courseData);
+    }
+  }, [editCourseData]);
   const [courseInfo, setCourseInfo] = useState({
     name: "",
     description: "",
@@ -101,11 +131,9 @@ const CreateCourse = (props: Props) => {
     setCourseData(data);
   };
 
-  const handleCourseCreate = async (e: any) => {
+  const handleCourseUpdate = async (e: any) => {
     const data = courseData;
-    if (!isLoading) {
-      await createCourse(data);
-    }
+    await editCourse({ data, id });
   };
 
   return (
@@ -142,9 +170,9 @@ const CreateCourse = (props: Props) => {
           <CoursePreview
             active={active}
             setActive={setActive}
-            handleCourseCreate={handleCourseCreate}
+            handleCourseCreate={handleCourseUpdate}
             courseData={courseData}
-            isEdit={false}
+            isEdit={true}
           />
         )}
       </div>
@@ -156,4 +184,4 @@ const CreateCourse = (props: Props) => {
   );
 };
 
-export default CreateCourse;
+export default EditCourse;
