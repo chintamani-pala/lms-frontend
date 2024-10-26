@@ -13,5 +13,7 @@ export default function AdminProtected({ children }: ProtectedProps) {
   if (user) {
     const isAdmin = user?.role === "admin";
     return isAdmin ? children : redirect("/");
+  } else {
+    return redirect("/");
   }
 }
