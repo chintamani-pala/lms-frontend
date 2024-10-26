@@ -55,7 +55,7 @@ const AllCourses = (props: Props) => {
       }
     }
     if (deleteSuccess) {
-      toast.success("User Deleted Successfully");
+      toast.success("Course Deleted Successfully");
       refetch();
     }
   }, [deleteSuccess, deleteError]);
