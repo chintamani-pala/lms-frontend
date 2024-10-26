@@ -25,6 +25,7 @@ const Profile: FC<Props> = ({ user }) => {
     setLogout(true);
     await logoutUser({});
     await signOut();
+    redirect("/");
   };
 
   if (typeof window !== "undefined") {

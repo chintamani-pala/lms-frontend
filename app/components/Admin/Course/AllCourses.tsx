@@ -1,18 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Button } from "@mui/material";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { useTheme } from "next-themes";
-import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  MenuItem,
+  Typography,
+} from "@mui/material";
+import {
+  useDeleteCourseMutation,
+  useGetAllCoursesQuery,
+} from "@/redux/features/courses/coursesApi";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
+import toast from "react-hot-toast";
 
 type Props = {};
 
 const AllCourses = (props: Props) => {
   const { theme, setTheme } = useTheme();
 
-  const { isLoading, data, error } = useGetAllCoursesQuery({});
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [selectedCourseId, setSelectedUserId] = useState("");
+
+  const { isLoading, data, refetch } = useGetAllCoursesQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const [deleteCourse, { isSuccess: deleteSuccess, error: deleteError }] =
+    useDeleteCourseMutation();
+  const handleDelete = async () => {
+    if (selectedCourseId) {
+      await deleteCourse(selectedCourseId);
+      setDeleteConfirmOpen(false);
+    }
+  };
+
+  const handleOpenDeleteConfirm = (id: string) => {
+    setSelectedUserId(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  useEffect(() => {
+    if (deleteError) {
+      if ("data" in deleteError) {
+        toast.error((deleteError?.data as { message: string }).message);
+      }
+    }
+    if (deleteSuccess) {
+      toast.success("User Deleted Successfully");
+      refetch();
+    }
+  }, [deleteSuccess, deleteError]);
 
   const columns = [
     {
@@ -61,7 +107,7 @@ const AllCourses = (props: Props) => {
       renderCell: (params: any) => {
         return (
           <>
-            <Button>
+            <Button onClick={() => handleOpenDeleteConfirm(params.row.id)}>
               <AiOutlineDelete
                 className="dark:text-white text-black"
                 size={20}
@@ -153,6 +199,52 @@ const AllCourses = (props: Props) => {
           >
             <DataGrid rows={rows} columns={columns} checkboxSelection />
           </Box>
+          {/* Delete Confirmation Modal */}
+          <Dialog
+            open={deleteConfirmOpen}
+            onClose={() => setDeleteConfirmOpen(false)}
+            PaperProps={{
+              style: {
+                borderRadius: 16, // Rounded corners
+                backgroundColor: theme === "dark" ? "#475d89" : "#ffffff", // Modal background color
+                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)", // Subtle shadow
+              },
+            }}
+          >
+            <DialogTitle style={{ textAlign: "center", fontWeight: "bold" }}>
+              Confirm Delete
+            </DialogTitle>
+            <DialogContent style={{ textAlign: "center" }}>
+              <Typography variant="body1" style={{ marginBottom: 20 }}>
+                Are you sure you want to delete this Course?
+              </Typography>
+            </DialogContent>
+            <DialogActions style={{ justifyContent: "center" }}>
+              <Button
+                onClick={() => setDeleteConfirmOpen(false)}
+                style={{
+                  backgroundColor: theme === "dark" ? "#475d79" : "#f0f0f0", // Background for Cancel button
+                  color: theme === "dark" ? "white" : "black",
+                  borderRadius: 8,
+                  border: "1px solid #ccc",
+                  marginRight: 10,
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDelete}
+                color="error" // Use the error color for Delete button
+                variant="contained"
+                style={{
+                  borderRadius: 8,
+                  marginLeft: 10,
+                }}
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       )}
     </div>
