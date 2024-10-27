@@ -259,7 +259,7 @@ const Sidebar = () => {
             />
             <Item
               title="Categories"
-              to="/admin/Categories"
+              to="/admin/categories"
               icon={<WysiwygIcon />}
               selected={selected}
               setSelected={setSelected}

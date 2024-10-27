@@ -23,7 +23,7 @@ const EditCourse: FC<Props> = ({ id }) => {
   );
   const editCourseData =
     data && data?.courses?.find((item: any) => item._id === id);
-  console.log(editCourseData);
+
   useEffect(() => {
     if (isSuccess) {
       toast.success("Course Updated successfully");
@@ -47,6 +47,7 @@ const EditCourse: FC<Props> = ({ id }) => {
         estimatedPrice: editCourseData?.estimatedPrice,
         tags: editCourseData?.tags,
         level: editCourseData?.level,
+        categories: editCourseData?.categories,
         demoUrl: editCourseData?.demoUrl,
         thumbnail: editCourseData?.thumbnail?.url,
       });
@@ -63,6 +64,7 @@ const EditCourse: FC<Props> = ({ id }) => {
     price: "",
     estimatedPrice: "",
     tags: "",
+    categories: "",
     level: "",
     demoUrl: "",
     thumbnail: "",

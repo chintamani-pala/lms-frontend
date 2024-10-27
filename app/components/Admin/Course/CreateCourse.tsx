@@ -34,6 +34,7 @@ const CreateCourse = (props: Props) => {
     estimatedPrice: "",
     tags: "",
     level: "",
+    categories: "",
     demoUrl: "",
     thumbnail: "",
   });
@@ -47,6 +48,7 @@ const CreateCourse = (props: Props) => {
       title: "",
       description: "",
       videoSection: "Untitled Section",
+      videoLength: "",
       links: [
         {
           title: "",
@@ -58,6 +60,7 @@ const CreateCourse = (props: Props) => {
   ]);
 
   const [courseData, setCourseData] = useState({});
+
   const handleSubmit = async () => {
     //format benifts array
     const formattedBenefits = benefits.map((benefit) => ({
@@ -75,6 +78,7 @@ const CreateCourse = (props: Props) => {
         videoUrl: courseContent.videoUrl,
         title: courseContent.title,
         description: courseContent.description,
+        videoLength: courseContent.videoLength,
         videoSection: courseContent.videoSection,
         links: courseContent.links.map((link) => ({
           title: link.title,
@@ -90,6 +94,7 @@ const CreateCourse = (props: Props) => {
       price: courseInfo.price,
       estimatedPrice: courseInfo.estimatedPrice,
       tags: courseInfo.tags,
+      categories: courseInfo.categories,
       thumbnail: courseInfo.thumbnail,
       level: courseInfo.level,
       demoUrl: courseInfo.demoUrl,
@@ -144,7 +149,6 @@ const CreateCourse = (props: Props) => {
             setActive={setActive}
             handleCourseCreate={handleCourseCreate}
             courseData={courseData}
-            isEdit={false}
           />
         )}
       </div>

@@ -1,5 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { styles } from "../../../../app/styles/style";
+import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 
 type Props = {
   courseInfo: any;
@@ -15,6 +16,14 @@ const CourseInformation: FC<Props> = ({
   setActive,
 }) => {
   const [dragging, setDragging] = useState(false);
+  const { data } = useGetHeroDataQuery("Categories");
+  const [categories, setCategories] = useState<any>([]);
+
+  useEffect(() => {
+    if (data) {
+      setCategories(data?.layout?.categories);
+    }
+  }, [data]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setActive(active + 1); // Proceed to the next step
@@ -137,24 +146,52 @@ const CourseInformation: FC<Props> = ({
           </div>
         </div>
         <br />
+        <div className="w-full flex justify-between mt-5">
+          <div className="w-[45%]">
+            <div className="mt-5">
+              <label htmlFor="tags" className={`${styles.label}`}>
+                Course Tags
+              </label>
+              <input
+                type="text"
+                id="tags"
+                value={courseInfo.tags || ""}
+                onChange={(e) =>
+                  setCourseInfo({ ...courseInfo, tags: e.target.value })
+                }
+                placeholder="MERN, Next 13, Socket io, tailwind css, LMS"
+                className={`${styles.input}`}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Demo URL Field */}
+          <div className="w-[45%]">
+            <label htmlFor="demoUrl" className={`${styles.label}`}>
+              Course Categories
+            </label>
+            <select
+              name=""
+              id=""
+              className="w-full border rounded h-[40px] px-2 outline-none mt-[10px] font-Poppins"
+              value={courseInfo.categories || ""}
+              onChange={(e) =>
+                setCourseInfo({ ...courseInfo, categories: e.target.value })
+              }
+            >
+              <option value="">Select Category</option>
+              {categories.map((item: any) => (
+                <option value={item?.title} key={item?._id}>
+                  {item.title}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
         {/* Course Tags Field */}
-        <div className="mt-5">
-          <label htmlFor="tags" className={`${styles.label}`}>
-            Course Tags
-          </label>
-          <input
-            type="text"
-            id="tags"
-            value={courseInfo.tags || ""}
-            onChange={(e) =>
-              setCourseInfo({ ...courseInfo, tags: e.target.value })
-            }
-            placeholder="MERN, Next 13, Socket io, tailwind css, LMS"
-            className={`${styles.input}`}
-            required
-          />
-        </div>
+
         <br />
         {/* Course Level Field */}
         <div className="w-full flex justify-between mt-5">
