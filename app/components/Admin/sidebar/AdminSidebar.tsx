@@ -299,6 +299,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="Users Analytics"
+              to="/admin/users-analytics"
+              icon={<MapOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Typography
               variant="h5"
               sx={{ m: "5px 0 5px 5px" }}
